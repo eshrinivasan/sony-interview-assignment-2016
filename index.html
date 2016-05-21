@@ -1,1 +1,32 @@
-Hello Playstation
+<!DOCTYPE html>
+<html>
+  <head>
+  	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/4.1.1/normalize.min.css">
+    <link rel="stylesheet" href="style.css">
+  </head>
+
+  <body>
+  	<div id='noscript'>Please enable JavaScript or use a modern browser to use this site.</div>
+  	<div class="container">
+	    <form name="searchForm" class="search_bar">
+	    	<input id="search_box" type="text" placeholder="Search query..." value=''></input>
+	    	<input id="search_submit" type="submit" value="Search"></input>
+	    </form>
+	    <hr/>
+	    <div id="search_results_area"> 
+	    	<div id="total_results_count" class="placer align_left">123</div>
+	    	<span id="loading">Loading...</span>
+		    	<div id="page_results" class="placer align_right">
+		    		<input id="prev_button" type="button" value="&#xab;"></input>
+			    
+			    	<span id="page_indicator"></span>
+			    	<input id="next_button"  type="button" value="&#xbb;"></input>
+	    		</div>
+	    	<ul id="search_list_items"></ul>
+	    </div>
+	</div>
+	<script>document.getElementById('noscript').style.display='none';</script>
+	<script src="pubsub.js"></script>
+    <script src="script.js"></script>
+  </body>
+</html>
