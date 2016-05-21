@@ -123,26 +123,5 @@ twitchWeb.pager = ({
 
 function debug(){
 	var arglist = Array.prototype.slice.call(arguments);
-	console.log(arglist);
+	//console.log(arglist);
 }
-
-//To do:
-//Clean up code
-//Add spinner or loading text
-//Add noscript tag
-/*
-Use JSONP
-vanilla JS with XHR to hit the API
-code to a github repo and send us the link.  
-You can host the running app on github.io
-
-Error handling
-Code comments
-Use promises
-Object oriented pattern
-Responsive layout
-Unit testing
-Performance consideration, quick to load
-Cross browser compatibility(check IE)
-Cross device
-*/
