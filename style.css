@@ -2,10 +2,6 @@ body{
 	font-size:16px;
 }
 
-.hide{
-	display:none;
-}
-
 .container{
     width: 960px;
     padding:1em;
@@ -13,18 +9,9 @@ body{
     border:1px solid;
 }
 
-.clearfix:after {
-  content: "";
-  display: table;
-  clear: both;
-}
-
-.placer{
-	display:inline-block;
-}
-
-.align_right{
-	float:right;
+/*Form items*/
+form.search_bar{
+	padding:2em 0;
 }
 
 input[type=text]{
@@ -46,25 +33,25 @@ input[type=button]{
 }
 
 input[type=submit]{
-	 border:1px solid #CCCCCC;
-	 -webkit-box-shadow: #FEFFFF 0px 1px 1px ;
-	 -moz-box-shadow: #FEFFFF 0px 1px 1px ; 
-	 box-shadow: #FEFFFF 0px 1px 1px ; 
-	 -webkit-border-radius: 3px; 
-	 -moz-border-radius: 3px;
-	 border-radius: 3px;
-	 padding: 7px; 
-	 text-decoration:none; 
-	 display:inline-block;
-	 font-weight:bold; 
-	 color: #4A4A4A;
-	 background-color: #F7F5F6; 
-	 background-image: -webkit-gradient(linear, left top, left bottom, from(#F7F5F6), to(#DDDDDD));
-	 background-image: -webkit-linear-gradient(top, #F7F5F6, #DDDDDD);
-	 background-image: -moz-linear-gradient(top, #F7F5F6, #DDDDDD);
-	 background-image: -ms-linear-gradient(top, #F7F5F6, #DDDDDD);
-	 background-image: -o-linear-gradient(top, #F7F5F6, #DDDDDD);
-	 background-image: linear-gradient(to bottom, #F7F5F6, #DDDDDD);filter:progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#F7F5F6, endColorstr=#DDDDDD);
+	border:1px solid #CCCCCC;
+	-webkit-box-shadow: #FEFFFF 0px 1px 1px ;
+	-moz-box-shadow: #FEFFFF 0px 1px 1px ; 
+	box-shadow: #FEFFFF 0px 1px 1px ; 
+	-webkit-border-radius: 3px; 
+	-moz-border-radius: 3px;
+	border-radius: 3px;
+	padding: 7px; 
+	text-decoration:none; 
+	display:inline-block;
+	font-weight:bold; 
+	color: #4A4A4A;
+	background-color: #F7F5F6; 
+	background-image: -webkit-gradient(linear, left top, left bottom, from(#F7F5F6), to(#DDDDDD));
+	background-image: -webkit-linear-gradient(top, #F7F5F6, #DDDDDD);
+	background-image: -moz-linear-gradient(top, #F7F5F6, #DDDDDD);
+	background-image: -ms-linear-gradient(top, #F7F5F6, #DDDDDD);
+	background-image: -o-linear-gradient(top, #F7F5F6, #DDDDDD);
+	background-image: linear-gradient(to bottom, #F7F5F6, #DDDDDD);filter:progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#F7F5F6, endColorstr=#DDDDDD);
 }
 
 input[type=button]:focus,
@@ -76,14 +63,7 @@ input[type=submit]:active{
 	background:#e6e6e6;
 }
 
-/*Form items*/
-form.search_bar{
-	padding:2em 0;
-}
-
-
 /*List Items*/
-
 ul{
 	list-style-type: none;
 	padding:0;
@@ -93,8 +73,7 @@ li span{
 	vertical-align: top;
 }
 
-
-li.odd{
+li.striped{
 	background:#f2f5f6;
 }
 
@@ -105,7 +84,7 @@ li.odd{
 	border:1px solid;
 }
 
-li.listItem:hover{
+.listItem:hover{
 	background:#d6f0fd;
 	padding: .5em;
 }
@@ -136,7 +115,6 @@ li.listItem:hover{
 	margin:0 1em;
 }
 
-
 /*Controls*/
 #loading{
 	text-align: center;
@@ -155,4 +133,22 @@ li.listItem:hover{
 #next_button{
     font-weight: bold;
     cursor: pointer;
+}
+
+/*Utility classes*/
+.clearfix:after {
+	content: "";
+	display: table;
+	clear: both;
+}
+
+.hide{
+	display:none;
+}
+.placer{
+	display:inline-block;
+}
+
+.align_right{
+	float:right;
 }

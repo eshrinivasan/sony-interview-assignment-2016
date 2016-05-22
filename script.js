@@ -43,11 +43,9 @@ twitchWeb.view = ({
 			return;
 		}
     	
-		ul = get(ulroot);
- 		
 		for(var k in json.streams){
 			li = create('li');
-			li.className = (k%2 === 0) ? "listItem clearfix" : "listItem odd clearfix";
+			li.className = (k%2 === 0) ? "listItem striped clearfix" : "listItem clearfix";
 			
 			img = create('img');//create image tag
 			img.src = json.streams[k].preview.medium; 
@@ -70,6 +68,8 @@ twitchWeb.view = ({
 			docfrag.appendChild(li);
 		}
 		get("loading").className = "hide"; //hide "loading" text indicator
+
+		ul = get(ulroot);
 		if(total){//valid results 
 			ul.innerHTML = '';//Clear the existing list, if any
 			ul.appendChild(docfrag);
@@ -92,7 +92,7 @@ twitchWeb.view = ({
 			}
 		}
     }
-}).init(); // Initialize the view
+}).init();
 
 twitchWeb.pager = ({
 	init: function(){
@@ -134,7 +134,7 @@ twitchWeb.pager = ({
 		pubsub.publish('update-list', nextUrl);
 		this.displayCount(total);
 	},
-	displayCount: function(total){
+	displayCount:function(total){
 		var totalPages = Math.ceil(total/10);
 		get("total_results_count").innerText = "Total Results: "+total;
 		get("page_indicator").innerText = (total > 0 ) ? this.count+"/"+totalPages : "";
