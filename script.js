@@ -10,7 +10,7 @@ twitchWeb.model = ({
 	    pubsub.publish('list-loaded', this.data);
 	},
 	loadList: function(topic, url) {//JSONP call to twitch api
-		var s = document.createElement('script');
+		var s = create('script');
 		s.type = 'text/javascript';
 		s.src = url+'&callback=twitchWeb.model.response';
 		var h = document.getElementsByTagName('script')[0];
@@ -29,26 +29,31 @@ twitchWeb.view = ({
        	return this;
     },
     displayList: function (topic, data) {//Construct list from jsonp response
-    	getElement("loading").className = "hide";
-        var json, docfrag, ul, li, span, listItem, img = '';
+    	json = data[0];
+		if(json.error){ //If error, return
+			return;
+		}
+		debug("json", json.streams);
+    	get("loading").className = "hide";
+        var json, docfrag, ul, li, span, listItem, anchor, img = '';
         var ulroot = "search_list_items";
-		json = data[0];
 		docfrag = document.createDocumentFragment();
-		ul = getElement(ulroot);
+		ul = get(ulroot);
  		
 		for(var k in json.streams){
-			li = document.createElement('li');
+			li = create('li');
 			li.className = "listItem clearfix";
-			img = document.createElement('img');
+			img = create('img');
 			img.src = json.streams[k].preview.medium; 
 			img.className="listThumb";
 			li.appendChild(img);
 
-			span = document.createElement('span');
+
+			span = create('span');
 			span.className = "listDescription";
-			listItem = '<div class="displayname">'+json.streams[k].channel.display_name+
-			'</div><div class="metainfo"><span class="game">'+json.streams[k].channel.game+'</span>'+
-			'<span class="views">'+json.streams[k].channel.views +' views</span>'+
+			listItem = '<div class="displayname"><a href='+json.streams[k].channel.url+'>'+json.streams[k].channel.display_name+
+			'</a></div><div class="metainfo"><span class="game">'+json.streams[k].channel.game+'</span>'+
+			'<span class="views">'+json.streams[k].viewers +' viewers</span>'+
 			'<div class="status">Stream Description '+json.streams[k].channel.status +'</div></div>';			
 			span.innerHTML = listItem;
 			li.appendChild(span);
@@ -61,7 +66,8 @@ twitchWeb.view = ({
     	var searchTerm, url;
     	document.forms["searchForm"].onsubmit = function(e){
 			e.preventDefault();
-			searchTerm = getElement("search_box").value;
+			searchTerm = get("search_box").value;
+			searchTerm = searchTerm.replace(/</g, "&lt;").replace(/>/g, "&gt;");//sanitize
 			if(searchTerm){
 				url = twitchWeb.view.url + searchTerm;
 				pubsub.publish('update-list', url);	
@@ -81,40 +87,43 @@ twitchWeb.pager = ({
 	},
 	pageList: function(topic, data){
 		var json, total, nextUrl, prevUrl;
-
 		json = data[0];
 		total = json._total;
+		if(!total){	//if error, display message
+			get("search_results_area").innerHTML = "<h2>No results to display for the search query</h2>";
+			return;
+		}
 		this.count = 1;
 		twitchWeb.pager.displayCount(total);
 		nextUrl = json._links.next;
 		prevUrl = json._links.prev;
-		getElement("prev_button").className = (prevUrl == undefined)?'hide':'';
-		getElement("prev_button").onclick = function(){
-			getElement("loading").className = "";
+		get("prev_button").className = (prevUrl == undefined)?'hide':'';
+		get("prev_button").onclick = function(){
+			get("loading").className = "";
 			twitchWeb.pager.prev(prevUrl, total);
 		}
-		getElement("next_button").onclick = function(){
-			getElement("loading").className = "";
+		get("next_button").onclick = function(){
+			get("loading").className = "";
 			twitchWeb.pager.next(nextUrl, total);
 		}
 	},
 	prev:function(prevUrl, total){
 		this.count--;
-		getElement("prev_button").className = (prevUrl == undefined)?'hide':'';
+		get("prev_button").className = (prevUrl == undefined)?'hide':'';
 		pubsub.publish('update-list', prevUrl);
 		this.displayCount(total);
 	},
 	next:function(nextUrl, total){
 		this.count++;
-		getElement("next_button").className = (nextUrl == undefined)?'hide':'';
+		get("next_button").className = (nextUrl == undefined)?'hide':'';
 		pubsub.publish('update-list', nextUrl);
 		this.displayCount(total);
 	},
 	displayCount: function(total){
 		var totalPages = Math.ceil(total/10);
-		getElement("total_results_count").innerText = "Total Results: "+total;
-		getElement("page_indicator").innerText = this.count+"/"+totalPages;
-		getElement("next_button").className = (this.count >= totalPages)?'hide':'';
+		get("total_results_count").innerText = "Total Results: "+total;
+		get("page_indicator").innerText = this.count+"/"+totalPages;
+		get("next_button").className = (this.count >= totalPages)?'hide':'';
 	},
 	count:1
 }).init();
@@ -124,7 +133,11 @@ function debug(){
 	var arglist = Array.prototype.slice.call(arguments);
 	console.log(arglist);
 }
-
-function getElement(id){
+//Wrapper for getElementById
+function get(id){
 	return document.getElementById(id);
+}
+
+function create(element){
+	return document.createElement(element);
 }
