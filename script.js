@@ -29,14 +29,16 @@ twitchWeb.view = ({
        	return this;
     },
     displayList: function (topic, data) {//Construct list from jsonp response
+        var json, docfrag, ul, li, span, listItem, anchor, img, total = '';
+        var ulroot = "search_list_items";
+		docfrag = document.createDocumentFragment();
+
     	json = data[0];
+    	total = data[0]._total;
 		if(json.error){ //If error, return
 			return;
 		}
     	get("loading").className = "hide";
-        var json, docfrag, ul, li, span, listItem, anchor, img = '';
-        var ulroot = "search_list_items";
-		docfrag = document.createDocumentFragment();
 		ul = get(ulroot);
  		
 		for(var k in json.streams){
@@ -63,8 +65,12 @@ twitchWeb.view = ({
 			li.appendChild(span);
 			docfrag.appendChild(li);
 		}
-		ul.innerHTML = '';//Clear the list
-		ul.appendChild(docfrag);
+		if(total){//valid results 
+			ul.innerHTML = '';//Clear the list
+			ul.appendChild(docfrag);
+		}else{
+			ul.innerHTML = "No results to display!";
+		}
     },
     searchSubmit: function(){//handle form submit
     	var searchTerm, url;
@@ -94,7 +100,7 @@ twitchWeb.pager = ({
 		json = data[0];
 		total = json._total || 0;
 		if(json.error){	//Error occurred, display message
-			get("search_results_area").innerHTML = "<h2>No results to display for the search query. Enter a different search query!</h2>";
+			//get("search_results_area").innerHTML = "<h2>No results to display for the search query. Enter a different search query!</h2>";
 			return;
 		}
 		this.count = 1;
@@ -138,10 +144,12 @@ function debug(){
 	if(typeof console!== undefined)
 	console.log(arglist);
 }
+
 //Wrapper for getElementById
 function get(id){
 	return document.getElementById(id);
 }
+
 //Wrapper for createElement
 function create(element){
 	return document.createElement(element);
