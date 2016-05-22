@@ -33,7 +33,6 @@ twitchWeb.view = ({
 		if(json.error){ //If error, return
 			return;
 		}
-		//debug("json", json.streams);
     	get("loading").className = "hide";
         var json, docfrag, ul, li, span, listItem, anchor, img = '';
         var ulroot = "search_list_items";
@@ -43,6 +42,7 @@ twitchWeb.view = ({
 		for(var k in json.streams){
 			li = create('li');
 			li.className = "listItem clearfix";
+
 			img = create('img');//create image tag
 			img.src = json.streams[k].preview.medium; 
 			img.className= "listThumb";
@@ -54,6 +54,7 @@ twitchWeb.view = ({
 
 			span = create('span');
 			span.className = "listDescription";
+			//create metadata for each item
 			listItem = '<div class="displayname">'+json.streams[k].channel.display_name+
 			'</div><div class="metainfo"><span class="game">'+json.streams[k].channel.game+'</span>'+
 			'<span class="views">'+json.streams[k].viewers +' viewers</span>'+
@@ -102,11 +103,11 @@ twitchWeb.pager = ({
 		prevUrl = json._links.prev;
 		get("prev_button").className = (prevUrl === undefined)?'hide':'';
 		get("prev_button").onclick = function(){
-			get("loading").className = "";
+			get("loading").className = ""; //show loading text
 			twitchWeb.pager.prev(prevUrl, total);
 		}
 		get("next_button").onclick = function(){
-			get("loading").className = "";
+			get("loading").className = ""; //show loading text
 			twitchWeb.pager.next(nextUrl, total);
 		}
 	},
@@ -134,6 +135,7 @@ twitchWeb.pager = ({
 //Utility function to log to console
 function debug(){
 	var arglist = Array.prototype.slice.call(arguments);
+	if(typeof console!== undefined)
 	console.log(arglist);
 }
 //Wrapper for getElementById
