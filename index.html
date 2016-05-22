@@ -1,26 +1,31 @@
 <!DOCTYPE html>
 <html>
   <head>
+  	<title>Stream TwitchWeb</title>
+	<meta name="description" content="Simple web application that retrives streams using twitch api">
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
   	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/4.1.1/normalize.min.css">
     <link rel="stylesheet" href="style.css">
   </head>
 
   <body>
-  	<div id='noscript'>Please enable JavaScript or use a modern browser to use this site.</div>
+  	<div id='noscript'>Please enable JavaScript or use a modern browser to see this application.</div>
   	<div class="container">
 	    <form name="searchForm" class="search_bar">
-	    	<input id="search_box" type="text" placeholder="Search query..." value=''></input>
-	    	<input id="search_submit" type="submit" value="Search"></input>
+	    	<label for="search_box">
+	    		<input id="search_box" name="search" type="text" placeholder="Search query..." value='' aria-label="Search"/>
+	    	</label>
+	    		<input id="search_submit" name="submit" type="submit" value="Search" aria-label="Submit"/>
 	    </form>
 	    <hr/>
 	    <div id="search_results_area"> 
 	    	<div id="total_results_count" class="placer align_left">Total Results: </div>
 	    	<span id="loading">Loading...</span>
 		    	<div id="page_results" class="placer align_right">
-		    		<input id="prev_button" type="button" value="&#xab;"></input>
-			    
-			    	<span id="page_indicator"></span>
-			    	<input id="next_button"  type="button" value="&#xbb;"></input>
+		    		<input id="prev_button" aria-label="Previous" type="button" value="&#xab;"/>
+		    			<span id="page_indicator"></span>
+			    	<input id="next_button" aria-label="Next" type="button" value="&#xbb;"/>
 	    		</div>
 	    	<ul id="search_list_items"></ul>
 	    </div>

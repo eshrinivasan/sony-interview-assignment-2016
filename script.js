@@ -1,5 +1,7 @@
 'use strict';
 var twitchWeb = twitchWeb || {};
+var debugMode = 0;
+
 twitchWeb.model = ({
 	init: function(){
 		pubsub.subscribe('update-list', this.loadList, this);
@@ -7,9 +9,10 @@ twitchWeb.model = ({
 	},
 	response: function(){//JSONP callback to handle response
 		this.data = arguments;
-	    pubsub.publish('list-loaded', this.data);
+		pubsub.publish('list-loaded', this.data);
 	},
 	loadList: function(topic, url) {//JSONP call to twitch api
+		if(!url){return;}
 		var s = create('script');
 		s.type = 'text/javascript';
 		s.src = url+'&callback=twitchWeb.model.response';
@@ -21,10 +24,11 @@ twitchWeb.model = ({
 
 twitchWeb.view = ({
 	url:'https://api.twitch.tv/kraken/search/streams?q=',
+	defaultValue:"starcraft",
     init: function() {//Default seach query
-        var url  = this.url + "starcraft";
-        pubsub.subscribe('list-loaded', this.displayList);
+        var url  = this.url + this.defaultValue;
 		pubsub.publish('update-list', url);
+		pubsub.subscribe('list-loaded', this.displayList);
 		this.searchSubmit();
        	return this;
     },
@@ -32,24 +36,24 @@ twitchWeb.view = ({
         var json, docfrag, ul, li, span, listItem, anchor, img, total = '';
         var ulroot = "search_list_items";
 		docfrag = document.createDocumentFragment();
-
-    	json = data[0];
+		json = data[0];
+		
     	total = data[0]._total;
 		if(json.error){ //If error, return
 			return;
 		}
-    	get("loading").className = "hide";
+    	
 		ul = get(ulroot);
  		
 		for(var k in json.streams){
 			li = create('li');
-			li.className = "listItem clearfix";
-
+			li.className = (k%2 === 0) ? "listItem clearfix" : "listItem odd clearfix";
+			
 			img = create('img');//create image tag
 			img.src = json.streams[k].preview.medium; 
 			img.className= "listThumb";
 			
-			anchor = create('a');//create anchor tag
+			anchor = create('a');//create anchor tag and wrap around img
 			anchor.href = json.streams[k].channel.url;
 			anchor.appendChild(img);
 			li.appendChild(anchor);
@@ -65,8 +69,9 @@ twitchWeb.view = ({
 			li.appendChild(span);
 			docfrag.appendChild(li);
 		}
+		get("loading").className = "hide"; //hide "loading" text indicator
 		if(total){//valid results 
-			ul.innerHTML = '';//Clear the list
+			ul.innerHTML = '';//Clear the existing list, if any
 			ul.appendChild(docfrag);
 		}else{
 			ul.innerHTML = "No results to display!";
@@ -98,8 +103,9 @@ twitchWeb.pager = ({
 	pageList: function(topic, data){
 		var json, total, nextUrl, prevUrl;
 		json = data[0];
+		
 		total = json._total || 0;
-		if(json.error){	//Error occurred, display message
+		if(json.error){	//Error occurred, return
 			return;
 		}
 		this.count = 1;
@@ -140,7 +146,7 @@ twitchWeb.pager = ({
 //Utility function to log to console
 function debug(){
 	var arglist = Array.prototype.slice.call(arguments);
-	if(typeof console!== undefined)
+	if(typeof console!== undefined && debugMode)
 	console.log(arglist);
 }
 

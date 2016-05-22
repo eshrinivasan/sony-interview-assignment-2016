@@ -30,10 +30,10 @@ body{
 input[type=text]{
 	padding:0.25em;
 	font-style: italic;
+    line-height: 1.3em;
 }
 
-input[type=button],
-input[type=submit]{
+input[type=button]{
 	color: #333;
     background-color: #fff;
     border-color: #ccc;
@@ -45,8 +45,34 @@ input[type=submit]{
 	font-weight: bold;
 }
 
+input[type=submit]{
+	 border:1px solid #CCCCCC;
+	 -webkit-box-shadow: #FEFFFF 0px 1px 1px ;
+	 -moz-box-shadow: #FEFFFF 0px 1px 1px ; 
+	 box-shadow: #FEFFFF 0px 1px 1px ; 
+	 -webkit-border-radius: 3px; 
+	 -moz-border-radius: 3px;
+	 border-radius: 3px;
+	 padding: 7px; 
+	 text-decoration:none; 
+	 display:inline-block;
+	 font-weight:bold; 
+	 color: #4A4A4A;
+	 background-color: #F7F5F6; 
+	 background-image: -webkit-gradient(linear, left top, left bottom, from(#F7F5F6), to(#DDDDDD));
+	 background-image: -webkit-linear-gradient(top, #F7F5F6, #DDDDDD);
+	 background-image: -moz-linear-gradient(top, #F7F5F6, #DDDDDD);
+	 background-image: -ms-linear-gradient(top, #F7F5F6, #DDDDDD);
+	 background-image: -o-linear-gradient(top, #F7F5F6, #DDDDDD);
+	 background-image: linear-gradient(to bottom, #F7F5F6, #DDDDDD);filter:progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#F7F5F6, endColorstr=#DDDDDD);
+}
+
+input[type=button]:focus,
+input[type=submit]:focus,
 input[type=button]:hover,
-input[type=submit]:hover{
+input[type=submit]:hover,
+input[type=button]:active,
+input[type=submit]:active{
 	background:#e6e6e6;
 }
 
@@ -67,14 +93,26 @@ li span{
 	vertical-align: top;
 }
 
+
+li.odd{
+	background:#f2f5f6;
+}
+
 .listItem{
-	margin:1em 1em 1em 0;
+	margin:2em 0 1em 0;
 	font-size:0.7em;
+	padding: .5em;
+	border:1px solid;
+}
+
+li.listItem:hover{
+	background:#d6f0fd;
+	padding: .5em;
 }
 
 .listThumb{
 	float:left;
-	margin:0 1em 1em 0;
+	margin:0 1em 0 0;
 	width:20%;
 }
 
