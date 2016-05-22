@@ -100,7 +100,6 @@ twitchWeb.pager = ({
 		json = data[0];
 		total = json._total || 0;
 		if(json.error){	//Error occurred, display message
-			//get("search_results_area").innerHTML = "<h2>No results to display for the search query. Enter a different search query!</h2>";
 			return;
 		}
 		this.count = 1;
@@ -132,7 +131,7 @@ twitchWeb.pager = ({
 	displayCount: function(total){
 		var totalPages = Math.ceil(total/10);
 		get("total_results_count").innerText = "Total Results: "+total;
-		get("page_indicator").innerText = this.count+"/"+totalPages;
+		get("page_indicator").innerText = (total > 0 ) ? this.count+"/"+totalPages : "";
 		get("next_button").className = (this.count >= totalPages)?'hide':'';
 	},
 	count:1
