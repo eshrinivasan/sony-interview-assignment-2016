@@ -1,31 +1,49 @@
 'use strict';
 var twitchWeb = twitchWeb || {};
+var cache = {};
 var debugMode = 0;
 
+/*
+ * Model 
+ * LoadList - Makes a JSONP call to twitchWeb API
+ * Caches the url and the response
+ */
 twitchWeb.model = ({
 	init: function(){
 		pubsub.subscribe('update-list', this.loadList, this);
 		return this;
 	},
-	response: function(){//JSONP callback to handle response
+	response: function(){
+		var currentUrl;
 		this.data = arguments;
+		currentUrl = this.data[0]._links.self;
+		cache[currentUrl] = this.data;
 		pubsub.publish('list-loaded', this.data);
 	},
 	loadList: function(topic, url) {//JSONP call to twitch api
 		if(!url){return;}
-		var s = create('script');
-		s.type = 'text/javascript';
-		s.src = url+'&callback=twitchWeb.model.response';
-		var h = document.getElementsByTagName('script')[0];
-		h.parentNode.insertBefore(s, h);
+		if(cache[url] === undefined){
+			var s = create('script');
+			s.type = 'text/javascript';
+			s.src = url+'&callback=twitchWeb.model.response';
+			var h = document.getElementsByTagName('script')[0];
+			h.parentNode.insertBefore(s, h);	
+		}else{	
+			pubsub.publish('list-loaded', cache[url]);
+		}
 	},
 	data:[]
 }).init();
 
+/*
+ * View - Loads the initial list from twitchWeb API
+ * Handles the search form submit
+ * Renders the list
+ */
 twitchWeb.view = ({
 	url:'https://api.twitch.tv/kraken/search/streams?q=',
 	defaultValue:"starcraft",
-    init: function() {//Default seach query
+    init: function() {
         var url  = this.url + this.defaultValue;
 		pubsub.publish('update-list', url);
 		pubsub.subscribe('list-loaded', this.displayList);
@@ -94,6 +112,12 @@ twitchWeb.view = ({
     }
 }).init();
 
+/*
+ * View 
+ * View controls "Previous", "Next"
+ * Makes call for Previous, Next Pages
+ * Updates the Total results count and page numbers
+ */
 twitchWeb.pager = ({
 	init: function(){
 		this.count = 1;
