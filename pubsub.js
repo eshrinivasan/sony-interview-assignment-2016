@@ -26,17 +26,4 @@ var pubsub = {};
         });
         return token;
     };
-  /*  q.unsubscribe = function( token ) {
-        for ( var m in topics ) {
-            if ( topics[m] ) {
-                for ( var i = 0, j = topics[m].length; i < j; i++ ) {
-                    if ( topics[m][i].token === token) {
-                        topics[m].splice( i, 1 );
-                        return token;
-                    }
-                }
-            }
-        }
-        return this;
-    };*/
 }( pubsub ));
