@@ -5,9 +5,9 @@ var debugMode = 1;
 
 /*
  * Model 
- * LoadList - Makes a JSONP call to twitchWeb API
- * Caches the url and the response
- * Cleansup script tags appended to the DOM
+ * LoadList - JSONP call to twitchWeb API
+ * Cache the response
+ * Clean up script tags appended to the DOM
  */
 twitchWeb.model = ({
 	init: function(){
@@ -146,17 +146,20 @@ twitchWeb.pager = ({
 			return;
 		}
 		get("total_results_count").innerText = "Total Results: "+total;
+
 		twitchWeb.pager.displayCount(total);
 		nextUrl = json._links.next;
 		prevUrl = json._links.prev;
 		get("prev_button").className = (prevUrl === undefined)?'hide':'';
-		get("prev_button").onclick = function(){
+		get("prev_button").onclick = function(e){
 			get("loading").className = ""; //show loading text
 			twitchWeb.pager.prev(prevUrl, total);
+			return false;
 		}
-		get("next_button").onclick = function(){
+		get("next_button").onclick = function(e){
 			get("loading").className = ""; //show loading text
 			twitchWeb.pager.next(nextUrl, total);
+			return false;
 		}
 	},
 	prev:function(prevUrl, total){
