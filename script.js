@@ -30,7 +30,7 @@ twitchWeb.model = ({
 
 			var callbackfn = 'exec'+Math.floor((Math.random()*65535)+1);
 			window[callbackfn] = function(data) {
-				var scr = document.getElementById(callbackfn);
+				var scr = get(callbackfn);
 				scr.parentNode.removeChild(scr);
 				twitchWeb.model.response(data);
 				window[callbackfn] = null;
@@ -39,8 +39,7 @@ twitchWeb.model = ({
 			
 			script.src = url+'&callback='+callbackfn;
 			script.id = callbackfn;
-			var h = document.getElementsByTagName('script')[0];
-			h.parentNode.insertBefore(script, h);	
+			document.getElementsByTagName('head')[0].appendChild(script);	
 		}else{	
 			pubsub.publish('list-loaded', cache[url]);
 		}
