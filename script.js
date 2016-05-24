@@ -1,12 +1,13 @@
 'use strict';
 var twitchWeb = twitchWeb || {};
 var cache = {};
-var debugMode = 0;
+var debugMode = 1;
 
 /*
  * Model 
  * LoadList - Makes a JSONP call to twitchWeb API
  * Caches the url and the response
+ * Cleansup script tags appended to the DOM
  */
 twitchWeb.model = ({
 	init: function(){
@@ -23,11 +24,23 @@ twitchWeb.model = ({
 	loadList: function(topic, url) {//JSONP call to twitch api
 		if(!url){return;}
 		if(cache[url] === undefined){
-			var s = create('script');
-			s.type = 'text/javascript';
-			s.src = url+'&callback=twitchWeb.model.response';
+			var script = create('script');
+			script.async = true;
+			script.type = 'text/javascript';
+
+			var callbackfn = 'exec'+Math.floor((Math.random()*65535)+1);
+			window[callbackfn] = function(data) {
+				var scr = document.getElementById(callbackfn);
+				scr.parentNode.removeChild(scr);
+				twitchWeb.model.response(data);
+				window[callbackfn] = null;
+				delete window[callbackfn];
+			}
+			
+			script.src = url+'&callback='+callbackfn;
+			script.id = callbackfn;
 			var h = document.getElementsByTagName('script')[0];
-			h.parentNode.insertBefore(s, h);	
+			h.parentNode.insertBefore(script, h);	
 		}else{	
 			pubsub.publish('list-loaded', cache[url]);
 		}
@@ -132,7 +145,7 @@ twitchWeb.pager = ({
 		if(json.error){	//Error occurred, return
 			return;
 		}
-		this.count = 1;
+		get("total_results_count").innerText = "Total Results: "+total;
 		twitchWeb.pager.displayCount(total);
 		nextUrl = json._links.next;
 		prevUrl = json._links.prev;
@@ -150,21 +163,17 @@ twitchWeb.pager = ({
 		this.count--;
 		get("prev_button").className = (prevUrl === undefined)?'hide':'';
 		pubsub.publish('update-list', prevUrl);
-		this.displayCount(total);
 	},
 	next:function(nextUrl, total){
 		this.count++;
 		get("next_button").className = (nextUrl === undefined)?'hide':'';
 		pubsub.publish('update-list', nextUrl);
-		this.displayCount(total);
 	},
 	displayCount:function(total){
-		var totalPages = Math.ceil(total/10);
-		get("total_results_count").innerText = "Total Results: "+total;
-		get("page_indicator").innerText = (total > 0 ) ? this.count+"/"+totalPages : "";
-		get("next_button").className = (this.count >= totalPages)?'hide':'';
-	},
-	count:1
+		this.totalPages = Math.ceil(total/10);
+		get("page_indicator").innerText = (total > 0 ) ? this.count+"/"+ this.totalPages : "";
+		get("next_button").className = (this.count >= this.totalPages)?'hide':'';
+	}
 }).init();
 
 //Utility function to log to console
