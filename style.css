@@ -7,6 +7,14 @@ body{
     padding:1em;
 	margin: 1em auto;
     border:1px solid;
+background: rgba(212,228,239,1);
+background: -moz-linear-gradient(left, rgba(212,228,239,1) 0%, rgba(134,174,204,1) 100%);
+background: -webkit-gradient(left top, right top, color-stop(0%, rgba(212,228,239,1)), color-stop(100%, rgba(134,174,204,1)));
+background: -webkit-linear-gradient(left, rgba(212,228,239,1) 0%, rgba(134,174,204,1) 100%);
+background: -o-linear-gradient(left, rgba(212,228,239,1) 0%, rgba(134,174,204,1) 100%);
+background: -ms-linear-gradient(left, rgba(212,228,239,1) 0%, rgba(134,174,204,1) 100%);
+background: linear-gradient(to right, rgba(212,228,239,1) 0%, rgba(134,174,204,1) 100%);
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#d4e4ef', endColorstr='#86aecc', GradientType=1 );
 }
 
 /*Form items*/
@@ -60,7 +68,7 @@ input[type=button]:hover,
 input[type=submit]:hover,
 input[type=button]:active,
 input[type=submit]:active{
-	background:#e6e6e6;
+	background:rgba(212,228,239,1);
 }
 
 /*List Items*/
@@ -74,18 +82,18 @@ li span{
 }
 
 li.striped{
-	background:#f2f5f6;
+	background:#FFF;
 }
 
 .listItem{
 	margin:2em 0 1em 0;
 	font-size:0.7em;
 	padding: .5em;
-	border:1px solid;
+	border:1px solid #fff;
 }
 
 .listItem:hover{
-	background:#d6f0fd;
+	background:#6699FF;
 	padding: .5em;
 }
 
